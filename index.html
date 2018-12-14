@@ -2,58 +2,156 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
+    <title>Smart Home</title>
     <script
             src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             crossorigin="anonymous"></script>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"
+    <link href="bootstrap.min.css" rel="stylesheet"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
-    <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
-    <script type="text/javascript" src="https://rawgithub.com/hiddentao/google-tts/master/google-tts.min.js"></script>
 
 </head>
 <body>
-<button class="btn btn-primary">Click me</button>
-<h id="inst"></h>
-<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
-<script>
-    if (annyang) {
-        setTimeout(() => {
-            readOutLoud('sẵn sàng');
-        }, 3000);
-        annyang.debug(true);
-        annyang.setLanguage('vi-VN');
-
-        function readOutLoud(message, speaker = "Vietnamese Female") {
-            responsiveVoice.speak(message.trim(), speaker);
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script> <!-- stats.js lib -->
+<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+<div id="particles-js"></div>
+<div style="text-align: center;">
+    <h1 style="margin-top: 50px;font-size: 60px">
+        SMART HOME
+    </h1>
+    <h1>
+        <small>COMING SOON</small>
+    </h1>
+    <p>v0.1 alpha</p>
+    <img src="images/smart-home-sketch-bg.png" alt="bg" class="img-fluid">
+    <p style="margin-top: 50px">Copyright @hataketsu 2018</p>
+    <style>
+        canvas {
+            display:block;
+            position: fixed;
+            z-index: -1;
         }
-
-        // Let's define a command.
-        var commands = {
-            'hello': function () {
-                readOutLoud('Hello world!');
+        body {
+            font-family: 'Raleway', sans-serif;
+            font-weight: 400; // Corresponds to the Bold 400 style
+        }
+    </style>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 88,
+                    "density": {
+                        "enable": true,
+                        "value_area": 700
+                    }
+                },
+                "color": {
+                    "value": ["#aa73ff", "#f8c210", "#83d238", "#33b1f8"]
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 15
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1.5,
+                        "opacity_min": 0.15,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 2.5,
+                    "random": false,
+                    "anim": {
+                        "enable": true,
+                        "speed": 2,
+                        "size_min": 0.15,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 110,
+                    "color": "#33b1f8",
+                    "opacity": 0.25,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1.6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
             },
-            'bật đèn :number': (number) => {
-                alert('Ok ' + number);
-            }
-        };
-        annyang.addCallback('result', (result) => {
-            console.log('this: ' + result);
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": false,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": false,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 400,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
         });
-
-        function led(number) {
-            console.log(number);
-        }
-
-        // Add our commands to annyang
-        annyang.addCommands(commands);
-
-        // Start listening.
-        annyang.start();
-    }
-</script>
+        var update;
+        update = function() {
+            requestAnimationFrame(update);
+        };
+        requestAnimationFrame(update);;
+    </script>
+</div>
 </body>
 </html>
