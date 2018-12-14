@@ -12,8 +12,11 @@
     client.onMessageArrived = onMessageArrived;
 
     // connect the client
-    client.connect({onSuccess: onConnect});
-
+    client.connect({
+        hosts: [ "wss://hungank.com:8000/" ],
+        useSSL: true,
+        onSuccess: onConnect
+    });
 
     // called when the client connects
     function onConnect() {
