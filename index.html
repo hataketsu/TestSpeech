@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            crossorigin="anonymous"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+    <script type="text/javascript" src="https://rawgithub.com/hiddentao/google-tts/master/google-tts.min.js"></script>
+
+</head>
+<body>
+<button class="btn btn-primary">Click me</button>
+<h id="inst"></h>
+<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+<script>
+    if (annyang) {
+        setTimeout(() => {
+            readOutLoud('sẵn sàng');
+        }, 3000);
+        annyang.debug(true);
+        annyang.setLanguage('vi-VN');
+
+        function readOutLoud(message, speaker = "Vietnamese Female") {
+            responsiveVoice.speak(message.trim(), speaker);
+        }
+
+        // Let's define a command.
+        var commands = {
+            'hello': function () {
+                readOutLoud('Hello world!');
+            },
+            'bật đèn :number': (number) => {
+                alert('Ok ' + number);
+            }
+        };
+        annyang.addCallback('result', (result) => {
+            console.log('this: ' + result);
+        });
+
+        function led(number) {
+            console.log(number);
+        }
+
+        // Add our commands to annyang
+        annyang.addCommands(commands);
+
+        // Start listening.
+        annyang.start();
+    }
+</script>
+</body>
+</html>
