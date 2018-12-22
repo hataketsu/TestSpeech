@@ -8,10 +8,13 @@
     <script
             src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
     <script src="bower_components/angularjs-mqtt/browserMqtt.js"></script>
     <script src="bower_components/angularjs-mqtt/mqtt.js"></script>
+    <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+    <script src="bower_components/angular-bootstrap-slider/slider.js"></script>
     <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
           integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
@@ -39,6 +42,7 @@
     <h1 style="margin-top: 50px;font-size: 60px" class="text-center">
         SMART HOME
     </h1>
+
     <h1 class="text-center">
         <small><i class="fa fa-microphone-alt"></i> {{speak_text}}</small>
     </h1>
@@ -53,6 +57,10 @@
                     <hr>
                     <p class="card-text">
                         {{device.status}}
+                    </p>
+                    <p ng-if="device.type=='dimmer'">
+                        <slider ng-model="device.value" max="100" min="0" step="1"
+                                on-stop-slide="set_dim(device.id,value)"></slider>
                     </p>
                     <div class="btn-group float-right">
                         <button class="btn  btn-outline-primary" ng-click="turnOnOff(0,device.id)">Turn on</button>
@@ -76,8 +84,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="col-form-label">Tên thiết bị:</label>
-                        <input type="text" class="form-control" name="device_1"
-                               ng-model="new_name">
+                        <input type="text" class="form-control" ng-model="new_name">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -93,17 +100,18 @@
         been reversed.</p>
 </div>
 </body>
-<script type="text/javascript" src="https://rawgithub.com/hiddentao/google-tts/master/google-tts.min.js"></script>
+<script src="https://rawgithub.com/hiddentao/google-tts/master/google-tts.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
 
 <script>
 
-    const app = angular.module('speaker', ['kmqtt']);
+    const app = angular.module('speaker', ['kmqtt', 'ui.bootstrap-slider']);
     app.controller('controller', function ($scope, kmqtt) {
         var client = kmqtt.connect('wss://hungank.com:8000/');
         $scope.speak_text = 'Loading';
-        $scope.devices = [];
+        $scope.devices = [{name: 'a', status: 'ON', id: 'dwsfAWfw', type: 'dimmer',value:70}];
         $scope.uids_set = [];
+
         $scope.turnOnOff = (value, uid) => {
             sendCommand({'command': 'click', id: uid, value: value});
         };
@@ -113,8 +121,16 @@
             $('#modal_name').modal('show');
         };
         $scope.save_new_name = () => {
-            sendCommand({'command': 'change_name', id: $scope.change_name_device.id, name: $scope.new_name});
-                        $('#modal_name').modal('hide');
+            sendCommand({
+                'command': 'change_name',
+                id: $scope.change_name_device.id,
+                name: $scope.new_name.toLowerCase()
+            });
+            $('#modal_name').modal('hide');
+        };
+        $scope.set_dim = (id, value) => {
+            console.log(id, value);
+            sendCommand({command: 'dim', id, value});
         };
         client.on("message", function (topic, payload) {
             let device = JSON.parse(payload.toString());
