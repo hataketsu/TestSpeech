@@ -18,42 +18,6 @@
 <body>
 <button class="btn btn-primary">Click me</button>
 <h id="inst"></h>
-<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
-<script>
-    if (annyang) {
-        setTimeout(() => {
-            readOutLoud('sẵn sàng');
-        }, 3000);
-        annyang.debug(true);
-        annyang.setLanguage('vi-VN');
 
-        function readOutLoud(message, speaker = "Vietnamese Female") {
-            responsiveVoice.speak(message.trim(), speaker);
-        }
-
-        // Let's define a command.
-        var commands = {
-            'hello': function () {
-                readOutLoud('Hello world!');
-            },
-            'bật đèn :number': (number) => {
-                alert('Ok ' + number);
-            }
-        };
-        annyang.addCallback('result', (result) => {
-            console.log('this: ' + result);
-        });
-
-        function led(number) {
-            console.log(number);
-        }
-
-        // Add our commands to annyang
-        annyang.addCommands(commands);
-
-        // Start listening.
-        annyang.start();
-    }
-</script>
 </body>
 </html>

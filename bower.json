@@ -1,0 +1,20 @@
+{
+  "name": "TestSpeech",
+  "homepage": "https://github.com/hataketsu/TestSpeech",
+  "authors": [
+    "hataketsu <hataketsu@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs-mqtt": "*"
+  }
+}
