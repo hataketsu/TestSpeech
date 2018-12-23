@@ -178,10 +178,10 @@
                 $scope.speak_text = 'Lỗi!';
                 $scope.$applyAsync();
             });
-            annyang.addCallback('end', () => {
-                $scope.speak_text = 'Đã dừng lại. Bấm để bắt đầu lắng nghe';
-                $scope.$applyAsync();
-            });
+            // annyang.addCallback('end', () => {
+            //     $scope.speak_text = 'Đã dừng lại. Bấm để bắt đầu lắng nghe';
+            //     $scope.$applyAsync();
+            // });
 
             function led(number) {
                 console.log(number);
