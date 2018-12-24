@@ -67,23 +67,22 @@
                         <slider ng-model="device.value" max="100" min="0" step="1"
                                 on-stop-slide="set_dim(device.id,value)"></slider>
                     </p>
-                    <p ng-if="device.type=='rgb'">
-                    <p style="background: #{{device.status}};color: #{{device.status}}"> Color: xxxxxxx </p>
+                    <div ng-if="device.type=='rgb'">
+                        <p style="background: #{{device.status}};color: #{{device.status}}"> Color: xxxxxxx </p>
 
-                    <input data-device-id='{{device.id}}' class="jscolor form-control" value='{{device.status}}'>
-                    <script>
-                        jscolor.installByClassName("jscolor");
-                        $('.jscolor').change((e) => {
-                            console.log(e);
-                            sendCommand({
-                                id: e.currentTarget.dataset['deviceId'],
-                                color: e.currentTarget.value,
-                                command: 'color'
-                            })
-                        });
-                    </script>
-                    <button class="form-control">OK</button>
-                    </p>
+                        <input data-device-id='{{device.id}}' class="jscolor form-control" value='{{device.status}}'>
+                        <script>
+                            jscolor.installByClassName("jscolor");
+                            $('.jscolor').change((e) => {
+                                console.log(e);
+                                sendCommand({
+                                    id: e.currentTarget.dataset['deviceId'],
+                                    color: e.currentTarget.value,
+                                    command: 'color'
+                                })
+                            });
+                        </script>
+                    </div>
                     <div class="btn-group float-right">
                         <button class="btn  btn-outline-primary" ng-click="turnOnOff(0,device.id)">Turn on</button>
                         <button class="btn btn-outline-secondary" ng-click="turnOnOff(1,device.id)">Turn off</button>
