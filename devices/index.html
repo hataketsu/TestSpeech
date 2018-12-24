@@ -130,7 +130,7 @@
     app.controller('controller', function ($scope, kmqtt) {
         var client = kmqtt.connect('wss://hungank.com:8000/');
         $scope.speak_text = 'Loading';
-        $scope.devices = [{type: 'rgb', status: 'ADE4FF', id: 1245}];
+        $scope.devices = [];
         $scope.uids_set = [];
         $scope.change_color = (ev) => {
             console.log(ev);
