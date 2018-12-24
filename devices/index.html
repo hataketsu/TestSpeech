@@ -15,6 +15,7 @@
     <script src="../bower_components/angularjs-mqtt/mqtt.js"></script>
     <script src="../bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
     <script src="../bower_components/angular-bootstrap-slider/slider.js"></script>
+    <script src="../jscolor.js"></script>
     <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
           integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
@@ -66,6 +67,23 @@
                         <slider ng-model="device.value" max="100" min="0" step="1"
                                 on-stop-slide="set_dim(device.id,value)"></slider>
                     </p>
+                    <p ng-if="device.type=='rgb'">
+                    <p style="background: #{{device.status}};color: #{{device.status}}"> Color: xxxxxxx </p>
+
+                    <input data-device-id='{{device.id}}' class="jscolor form-control" value='{{device.status}}'>
+                    <script>
+                        jscolor.installByClassName("jscolor");
+                        $('.jscolor').change((e) => {
+                            console.log(e);
+                            sendCommand({
+                                id: e.currentTarget.dataset['deviceId'],
+                                color: e.currentTarget.value,
+                                command: 'color'
+                            })
+                        });
+                    </script>
+                    <button class="form-control">OK</button>
+                    </p>
                     <div class="btn-group float-right">
                         <button class="btn  btn-outline-primary" ng-click="turnOnOff(0,device.id)">Turn on</button>
                         <button class="btn btn-outline-secondary" ng-click="turnOnOff(1,device.id)">Turn off</button>
@@ -98,7 +116,6 @@
         </div>
     </div>
 </div>
-
 <div style="text-align: center;">
     <p style="margin-top: 50px">Copyright &copy;2018 <a href="https://github.com/hataketsu/">hataketsu</a> . Nothing has
         been reversed.</p>
@@ -108,14 +125,16 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
 
 <script>
-
+    var sendCommand;
     const app = angular.module('speaker', ['kmqtt', 'ui.bootstrap-slider']);
     app.controller('controller', function ($scope, kmqtt) {
         var client = kmqtt.connect('wss://hungank.com:8000/');
         $scope.speak_text = 'Loading';
-        $scope.devices = [];
+        $scope.devices = [{type: 'rgb', status: 'ADE4FF', id: 1245}];
         $scope.uids_set = [];
-
+        $scope.change_color = (ev) => {
+            console.log(ev);
+        };
         $scope.turnOnOff = (value, uid) => {
             sendCommand({'command': 'click', id: uid, value: value});
         };
@@ -142,19 +161,37 @@
             $scope.uids_set = Array.from(new Set($scope.uids_set));
             $scope.devices[$scope.uids_set.indexOf(device.id)] = device;
             $scope.$applyAsync();
+
+
         });
         $scope.start_listen = () => {
-            annyang.start({autoRestart: false, continuous: false});
+
         };
         client.subscribe('control/out');
 
-        function sendCommand(cmd) {
+        sendCommand = (cmd) => {
+            console.log('Send', cmd);
             client.publish('control/in', JSON.stringify(cmd));
-        }
+        };
 
         setInterval(() => {
             sendCommand({'command': 'poll'});
-        }, 5000);
+        }, 10000);
+        setTimeout(() => {
+            sendCommand({'command': 'poll'});
+        }, 1000);
+
+
+        function start_listening() {
+            $scope.speak_text = 'Đang lắng nghe...';
+            $scope.$applyAsync();
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                annyang.start({autoRestart: false, continuous: false});
+            } else {
+                annyang.start();
+            }
+        }
+
         if (annyang) {
 
 
@@ -174,14 +211,13 @@
                     $scope.$applyAsync();
                 }
             });
-            annyang.addCallback('start', () => {
-                $scope.speak_text = 'Đang lắng nghe...';
-                $scope.$applyAsync();
-            });
-            annyang.addCallback('error', () => {
-                $scope.speak_text = 'Lỗi!';
-                $scope.$applyAsync();
-            });
+            // annyang.addCallback('start', () => {
+            //
+            // });
+            // annyang.addCallback('error', () => {
+            //     $scope.speak_text = 'Lỗi!';
+            //     $scope.$applyAsync();
+            // });
             // annyang.addCallback('end', () => {
             //     $scope.speak_text = 'Đã dừng lại. Bấm để bắt đầu lắng nghe';
             //     $scope.$applyAsync();
@@ -202,12 +238,7 @@
                     sendCommand({'command': 'voice', 'name': device.toLowerCase(), 'value': 1})
                 }
             });
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                $scope.speak_text = 'Bấm để bắt đầu lắng nghe';
-                $scope.$applyAsync();
-            } else {
-                annyang.start();
-            }
+            start_listening();
         }
     });
 </script>
