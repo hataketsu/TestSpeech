@@ -175,7 +175,7 @@
 
         setInterval(() => {
             sendCommand({'command': 'poll'});
-        }, 10000);
+        }, 60000);
         setTimeout(() => {
             sendCommand({'command': 'poll'});
         }, 1000);
@@ -222,23 +222,90 @@
             //     $scope.$applyAsync();
             // });
 
-            function led(number) {
-                console.log(number);
-            }
 
             annyang.addCommands({
-                'hello': function () {
-                    readOutLoud('Hello world!');
-                },
                 'bật *device': (device) => {
                     sendCommand({'command': 'voice', 'name': device.toLowerCase(), 'value': 0})
                 },
                 'tắt *device': (device) => {
                     sendCommand({'command': 'voice', 'name': device.toLowerCase(), 'value': 1})
+                }, 'đổi màu *device sang màu *color': (device, color) => {
+                    colorCode = COLORS[color];
+                    if (colorCode !== undefined) {
+                        sendCommand({
+                            command: 'color',
+                            name: device.toLowerCase(),
+                            color: colorCode.replace('#', '')
+                        });
+                        readOutLoud("đã đổi thành màu " + color);
+                    }
+
                 }
             });
             start_listening();
+
         }
     });
+    COLORS = {
+        "hổ phách": "#FFBF00",
+        "xanh berin": "#7FFFD4",
+        "xanh da trời": "#007FFF",
+        "be": "#F5F5DC",
+        "nâu sẫm": "#3D2B1F",
+        "đen": "#000000",
+        "xanh lam": "#0000FF",
+        "nâu": "#964B00",
+        "da bò": "#F0DC82",
+        "cam cháy": "#CC5500",
+        "hồng y": "#C41E3A",
+        "đỏ yên chi": "#960018",
+        "men ngọc": "#ACE1AF",
+        "anh đào": "#DE3163",
+        "chàm": "#007BA7",
+        "xanh nõn chuối": "#7FFF00",
+        "xanh cô ban": "#0047AB",
+        "đồng": "#B87333",
+        "san hô": "#FF7F50",
+        "kem": "#FFFDD0",
+        "đỏ thắm": "#DC143C",
+        "xanh lơ (cánh chả)": "#00FFFF",
+        "lục bảo": "#50C878",
+        "vàng kim loại": "#FFD700",
+        "xám": "#808080",
+        "xanh lá cây": "#00FF00",
+        "vòi voi": "#DF73FF",
+        "chàm": "#4B0082",
+        "ngọc thạch": "#00A86B",
+        "oải hương": "#E6E6FA",
+        "vàng chanh": "#CCFF00",
+        "hồng sẫm": "#FF00FF",
+        "hạt dẻ": "#800000",
+        "cẩm quỳ": "#993366",
+        "hoa cà": "#c8a2c8",
+        "lam sẫm": "#000080",
+        "thổ hoàng": "#CC7722",
+        "ô liu": "#808000",
+        "da cam": "#FF7F00",
+        "lan tím": "#DA70D6",
+        "lòng đào": "#FFE5B4",
+        "dừa cạn": "#CCCCFF",
+        "hồng": "#FFC0CB",
+        "mận": "#660066",
+        "xanh thủy tinh": "#003399",
+        "hồng đất": "#CC8899",
+        "tía": "#660099",
+        "đỏ": "#FF0000",
+        "cá hồi": "#FF8C69",
+        "đỏ tươi": "#FF2400",
+        "nâu đen": "#704214",
+        "bạc": "#C0C0C0",
+        "nâu tanin": "#D2B48C",
+        "mòng két": "#008080",
+        "xanh thổ": "#30D5C8",
+        "đỏ son": "#FF4D00",
+        "tím": "#BF00BF",
+        "trắng": "#FFFFFF",
+        "vàng": "#FFFF00",
+    };
 </script>
 </html>
