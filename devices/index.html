@@ -71,6 +71,7 @@
                         <p style="background: #{{device.status}};color: #{{device.status}}"> Color: xxxxxxx </p>
 
                         <input data-device-id='{{device.id}}' class="jscolor form-control" value='{{device.status}}'>
+                        <br>
                         <script>
                             jscolor.installByClassName("jscolor");
                             $('.jscolor').change((e) => {
@@ -184,13 +185,17 @@
         function start_listening() {
             $scope.speak_text = 'Đang lắng nghe...';
             $scope.$applyAsync();
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                annyang.start({autoRestart: false, continuous: false});
-            } else {
+            console.log('Started');
                 annyang.start();
-            }
+
+            // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            //     annyang.start({autoRestart: false, continuous: false});
+            // } else {
+            //     annyang.start();
+            // }
         }
 
+        $scope.start_listen = start_listening;
         if (annyang) {
 
 
@@ -210,17 +215,18 @@
                     $scope.$applyAsync();
                 }
             });
-            // annyang.addCallback('start', () => {
-            //
-            // });
-            // annyang.addCallback('error', () => {
-            //     $scope.speak_text = 'Lỗi!';
-            //     $scope.$applyAsync();
-            // });
-            // annyang.addCallback('end', () => {
-            //     $scope.speak_text = 'Đã dừng lại. Bấm để bắt đầu lắng nghe';
-            //     $scope.$applyAsync();
-            // });
+            annyang.addCallback('start', () => {
+                console.log('on start');
+            });
+            annyang.addCallback('error', (err) => {
+                $scope.speak_text = 'Lỗi!';
+                console.log(err);
+                $scope.$applyAsync();
+            });
+            annyang.addCallback('end', () => {
+                $scope.speak_text = 'Đã dừng lại. Bấm để bắt đầu lắng nghe';
+                $scope.$applyAsync();
+            });
 
 
             annyang.addCommands({
