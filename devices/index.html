@@ -186,13 +186,13 @@
             $scope.speak_text = 'Đang lắng nghe...';
             $scope.$applyAsync();
             console.log('Started');
-                annyang.start();
+                // annyang.start();
 
-            // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            //     annyang.start({autoRestart: false, continuous: false});
-            // } else {
-            //     annyang.start();
-            // }
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                annyang.start({autoRestart: false, continuous: false});
+            } else {
+                annyang.start();
+            }
         }
 
         $scope.start_listen = start_listening;
