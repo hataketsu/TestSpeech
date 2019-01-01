@@ -215,18 +215,18 @@
                     $scope.$applyAsync();
                 }
             });
-            annyang.addCallback('start', () => {
-                console.log('on start');
-            });
-            annyang.addCallback('error', (err) => {
-                $scope.speak_text = 'Lỗi!';
-                console.log(err);
-                $scope.$applyAsync();
-            });
-            annyang.addCallback('end', () => {
-                $scope.speak_text = 'Đã dừng lại. Bấm để bắt đầu lắng nghe';
-                $scope.$applyAsync();
-            });
+            // annyang.addCallback('start', () => {
+            //     console.log('on start');
+            // });
+            // annyang.addCallback('error', (err) => {
+            //     $scope.speak_text = 'Lỗi!';
+            //     console.log(err);
+            //     $scope.$applyAsync();
+            // });
+            // annyang.addCallback('end', () => {
+            //     $scope.speak_text = 'Đã dừng lại. Bấm để bắt đầu lắng nghe';
+            //     $scope.$applyAsync();
+            // });
 
 
             annyang.addCommands({
