@@ -127,7 +127,7 @@
 <script>
     var sendCommand;
     const app = angular.module('speaker', ['kmqtt', 'ui.bootstrap-slider']);
-    app.controller('controller', function ($scope, kmqtt,$http) {
+    app.controller('controller', function ($scope, kmqtt, $http) {
         var client = kmqtt.connect('wss://hungank.com:8000/');
         $scope.speak_text = 'Loading';
         $scope.devices = [];
@@ -247,6 +247,14 @@
                         readOutLoud("đã đổi thành màu " + color);
                     }
 
+                }, 'thông báo môi trường': () => {
+                    $http.get('https://localhost:5000/temphumi').then((res) => {
+                        console.log(res);
+                        let humi = res.humi.toFixed(1);
+                        let temp = res.temp.toFixed(1);
+                        console.log(humi);
+                        console.log(temp);
+                    });
                 }
             });
             start_listening();
