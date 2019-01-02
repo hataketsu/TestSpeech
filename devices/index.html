@@ -255,7 +255,9 @@
                         console.log(humi);
                         console.log(temp);
                         readOutLoud('nhiệt độ là ' + temp + 'độ xê');
-                        readOutLoud('độ ẩm là' + humi + ' %');
+                        setTimeout(() => {
+                            readOutLoud('độ ẩm là ' + humi + ' %');
+                        }, 2000);
                     });
                 }
             });
