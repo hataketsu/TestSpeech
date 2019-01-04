@@ -206,7 +206,13 @@
             annyang.setLanguage('vi-VN');
 
             function readOutLoud(message, speaker = "Vietnamese Female") {
-                responsiveVoice.speak(message.trim(), speaker);
+                // annyang.pause();
+                responsiveVoice.speak(message.trim(), speaker, {
+                    onend: () => {
+                        // annyang.resume();
+
+                    }
+                });
             }
 
             annyang.addCallback('result', (result) => {
@@ -247,7 +253,10 @@
                         readOutLoud("đã đổi thành màu " + color);
                     }
 
-                }, 'thông báo môi trường': () => {
+                },
+                'cài đặt tốc độ *device là *percent%': change_speed,
+                'cài đặt tốc độ *device là *percent phần trăm': change_speed,
+                'thông báo môi trường': () => {
                     $http.get('https://localhost:5000/temphumi').then((res) => {
                         console.log(res);
                         let humi = res.data.humi.toFixed(1);
@@ -261,10 +270,14 @@
                     });
                 }
             });
-            start_listening();
 
+            start_listening();
         }
     });
+    function change_speed(device, speed) {
+                    console.log(device, speed);
+                    sendCommand({command:'dim',name:device,value:speed})
+                }
     COLORS = {
         "hổ phách": "#FFBF00",
         "xanh berin": "#7FFFD4",
