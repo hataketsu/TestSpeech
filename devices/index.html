@@ -235,7 +235,7 @@
             // });
 
             function display_to_screen(text) {
-                $http.get('https://localhost:5000/?text=' + text+'                             ');
+                $http.get('https://localhost:5000/?text=' + text + '                             ');
             }
 
             annyang.addCommands({
@@ -273,6 +273,8 @@
                             readOutLoud('độ ẩm là ' + humi + '%');
                         }, 4000);
                     });
+                }, 'xin chào mon': () => {
+                    readOutLoud('Chào sếp, sếp muốn em giúp gì');
                 }
             });
 
