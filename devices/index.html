@@ -205,7 +205,7 @@
             annyang.debug(true);
             annyang.setLanguage('vi-VN');
 
-            function readOutLoud(message, speaker = "Vietnamese Female") {
+            function readOutLoud(message, speaker = "Vietnamese Male") {
                 // annyang.pause();
                 responsiveVoice.speak(message.trim(), speaker, {
                     onend: () => {
