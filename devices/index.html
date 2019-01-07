@@ -219,7 +219,6 @@
                 if (result.length > 0) {
                     $scope.speak_text = 'Bạn nói: ' + result[0];
                     $scope.$applyAsync();
-                    $http.get('https://localhost:5000/?text=' + result[0]);
                 }
             });
             // annyang.addCallback('start', () => {
@@ -235,13 +234,18 @@
             //     $scope.$applyAsync();
             // });
 
+            function display_to_screen(text) {
+                $http.get('https://localhost:5000/?text=' + text+'                             ');
+            }
 
             annyang.addCommands({
                 'bật *device': (device) => {
-                    sendCommand({'command': 'voice', 'name': device.toLowerCase(), 'value': 0})
+                    sendCommand({'command': 'voice', 'name': device.toLowerCase(), 'value': 0});
+                    display_to_screen('bật ' + device);
                 },
                 'tắt *device': (device) => {
-                    sendCommand({'command': 'voice', 'name': device.toLowerCase(), 'value': 1})
+                    sendCommand({'command': 'voice', 'name': device.toLowerCase(), 'value': 1});
+                    display_to_screen('tắt ' + device);
                 }, 'đổi màu *device sang màu *color': (device, color) => {
                     colorCode = COLORS[color];
                     if (colorCode !== undefined) {
@@ -252,13 +256,14 @@
                         });
                         readOutLoud("đã đổi thành màu " + color);
                     }
-
+                    display_to_screen('đổi màu ' + device + ' sang màu ' + color);
                 },
                 'cài đặt *device là *percent%': change_speed,
                 'cài đặt *device là *percent phần trăm': change_speed,
                 'thông báo môi trường': () => {
                     $http.get('https://localhost:5000/temphumi').then((res) => {
                         console.log(res);
+                        display_to_screen('thông báo môi trường');
                         let humi = res.data.humi.toFixed(1);
                         let temp = res.data.temp.toFixed(1);
                         console.log(humi);
@@ -274,10 +279,14 @@
             start_listening();
         }
     });
+
     function change_speed(device, speed) {
-                    console.log(device, speed);
-                    sendCommand({command:'dim',name:device,value:speed})
-                }
+        console.log(device, speed);
+        sendCommand({command: 'dim', name: device, value: speed});
+        display_to_screen('cài đặt ' + device + ' là ' + speed + '%');
+
+    }
+
     COLORS = {
         "hổ phách": "#FFBF00",
         "xanh berin": "#7FFFD4",
